@@ -1,0 +1,84 @@
+.tokens-container {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.token-content {
+  margin-bottom: 30px;
+  padding: 20px 15px 20px 15px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.encrypt-button {
+  /* border-radius: 15px; */
+  margin: 15px;
+  /* color: #40a9ff; */
+  /* border-color: #40a9ff; */
+}
+
+/* .encrypt-button:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+} */
+
+/* .encrypt-button[disabled],
+.encrypt-button[disabled]:hover,
+.encrypt-button[disabled]:focus {
+  color: #40a9ff;
+  border-color: #40a9ff;
+  background-color: #fff;
+  opacity: 0.4;
+} */
+
+.decrypt-button {
+  /* border-radius: 15px; */
+  margin: 15px;
+  /* color: #40a9ff; */
+  /* border-color: #40a9ff; */
+}
+
+.decrypt-button:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* .decrypt-button[disabled],
+.decrypt-button[disabled]:hover,
+.decrypt-button[disabled]:focus {
+  color: #40a9ff;
+  border-color: #40a9ff;
+  background-color: #fff;
+  opacity: 0.4;
+} */
+
+.separator {
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #8899a6;
+}
+
+.cv-choice-percentage {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.cv-choice-text {
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: bottom;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.selected-choice-icon {
+  margin-left: 10px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.input-token {
+  max-width: 150px;
+}
