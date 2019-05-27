@@ -33,7 +33,11 @@ class TokenComponent extends Component {
 
   saveToken(event) {
     if (this.state.inputText === this.state.original) {
-      return;
+      this.setState({
+        inputText: "",
+        encrypted: "",
+        original: ""
+      });
     }
     let promise = createToken({ originalToken: this.state.inputText });
     promise
@@ -41,7 +45,8 @@ class TokenComponent extends Component {
         const tokens = this.state.tokens.slice();
         this.setState({
           tokens: tokens.concat(response),
-          refreshChild: !this.state.refreshChild
+          refreshChild: !this.state.refreshChild,
+          inputText: ""
         });
       })
       .catch(error => {
