@@ -5,8 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dharmendra.exception.ResourceNotFoundException;
 import com.dharmendra.model.Token;
-import com.dharmendra.payload.TokenPayload;
 import com.dharmendra.repository.TokenRepository;
 import com.dharmendra.service.EncryptionService;
 
@@ -44,8 +41,7 @@ public class EncryptionController {
 	
 	@PostMapping(value = "/tokens")
     @PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Token> saveToken(@Valid @RequestBody TokenPayload token) {
-		Token savedToken = encryptionService.saveToke(token);
-		return new ResponseEntity<Token>(savedToken, HttpStatus.CREATED);
+	public Token saveToken(@Valid @RequestBody Token token) {
+		return encryptionService.saveToke(token);
 	}
 }

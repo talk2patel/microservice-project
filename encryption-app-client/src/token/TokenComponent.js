@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import "./Token.css";
-// import { Table, Divider, Tag } from "antd";
-import TokenList from "./TokenList";
-import { TOKEN_LIST_SIZE } from "../constants";
-import {
-  getUserCreatedTokens,
-  getAllTokens,
-  createToken
-} from "../util/APIUtils";
+import TokenTable from "./TokenTable";
+import { createToken } from "../util/APIUtils";
 import { Button, Input } from "antd";
 class TokenComponent extends Component {
   constructor(props) {
@@ -17,13 +11,7 @@ class TokenComponent extends Component {
       refreshChild: false,
       original: "",
       encrypted: "",
-      tokens: [],
-      page: 0,
-      size: 10,
-      totalElements: 0,
-      totalPages: 0,
-      last: true,
-      isLoading: false
+      tokens: []
     };
     this.saveToken = this.saveToken.bind(this);
     this.onCellSelection = this.onCellSelection.bind(this);
@@ -38,22 +26,23 @@ class TokenComponent extends Component {
         encrypted: "",
         original: ""
       });
+    } else {
+      let promise = createToken({ originalToken: this.state.inputText });
+      promise
+        .then(response => {
+          const tokens = this.state.tokens.slice();
+          this.setState({
+            tokens: tokens.concat(response),
+            refreshChild: !this.state.refreshChild,
+            inputText: ""
+          });
+        })
+        .catch(error => {
+          this.setState({
+            isLoading: false
+          });
+        });
     }
-    let promise = createToken({ originalToken: this.state.inputText });
-    promise
-      .then(response => {
-        const tokens = this.state.tokens.slice();
-        this.setState({
-          tokens: tokens.concat(response),
-          refreshChild: !this.state.refreshChild,
-          inputText: ""
-        });
-      })
-      .catch(error => {
-        this.setState({
-          isLoading: false
-        });
-      });
   }
 
   onCellSelection(encrypted, original) {
@@ -66,6 +55,9 @@ class TokenComponent extends Component {
   }
 
   onDecrypt() {
+    if (this.state.inputText === this.state.original) {
+      return;
+    }
     this.setState({
       inputText: this.state.original
     });
@@ -85,7 +77,6 @@ class TokenComponent extends Component {
           size="large"
           value={this.state.inputText}
           onChange={this.onInputChange}
-          // onChange={this.handleChange}
           placeholder="Enter a token"
         />
         <Button
@@ -104,7 +95,7 @@ class TokenComponent extends Component {
         >
           Decrypt
         </Button>
-        <TokenList
+        <TokenTable
           refreshChild={this.state.refreshChild}
           onClick={(encrypted, original) =>
             this.onCellSelection(encrypted, original)

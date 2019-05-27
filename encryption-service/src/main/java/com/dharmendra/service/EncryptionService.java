@@ -35,10 +35,8 @@ public class EncryptionService {
 		}
 	}
 
-	public Token saveToke(TokenPayload tokenPayload) {
-		Token token = new Token();
-		token.setOriginalToken(tokenPayload.getOriginalToken());
-		token.setEncryptedToken(encrypt(tokenPayload.getOriginalToken()));
+	public Token saveToke(Token token) {
+		token.setEncryptedToken(encrypt(token.getOriginalToken()));
 		tokenRepository.save(token);
 		return token;
 	}

@@ -28,7 +28,7 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	@GetMapping("/user/me")
+	@GetMapping("/users/me")
 	@PreAuthorize("hasRole('USER')")
 	public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
 		UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(),
@@ -36,19 +36,19 @@ public class UserController {
 		return userSummary;
 	}
 
-	@GetMapping("/user/checkUsernameAvailability")
-	public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
+	@GetMapping("/user-identities/username/{username}")
+	public UserIdentityAvailability checkUsernameAvailability(@PathVariable(value = "username") String username) {
 		Boolean isAvailable = !userRepository.existsByUsername(username);
 		return new UserIdentityAvailability(isAvailable);
 	}
 
-	@GetMapping("/user/checkEmailAvailability")
-	public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
+	@GetMapping("/user-identities/email/{email}")
+	public UserIdentityAvailability checkEmailAvailability(@PathVariable(value = "email") String email) {
 		Boolean isAvailable = !userRepository.existsByEmail(email);
 		return new UserIdentityAvailability(isAvailable);
 	}
 
-	@GetMapping("/users/{username}")
+	@GetMapping("/user-profiles/{username}")
 	public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));

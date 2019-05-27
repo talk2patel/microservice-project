@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { getAllTokens, getUserCreatedTokens } from "../util/APIUtils";
-import LoadingIndicator from "../common/LoadingIndicator";
-import { Button, Icon, notification } from "antd";
 import { TOKEN_LIST_SIZE } from "../constants";
 import { withRouter } from "react-router-dom";
 import { Table, Divider, Tag } from "antd";
 
-const { Column, ColumnGroup } = Table;
-
-class TokenList extends Component {
+class TokenTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,10 +14,10 @@ class TokenList extends Component {
       size: 10,
       totalElements: 0,
       totalPages: 0,
-      last: true,
-      isLoading: false
+      last: true
     };
     this.onRowClick = this.onRowClick.bind(this);
+    this.loadTokens = this.loadTokens.bind(this);
   }
 
   loadTokens(page = 0, size = TOKEN_LIST_SIZE) {
@@ -29,18 +25,12 @@ class TokenList extends Component {
     if (this.props.username) {
       if (this.props.type === "USER_CREATED_TOKENS") {
         promise = getUserCreatedTokens(this.props.username, page, size);
+      } else {
+        promise = getAllTokens(page, size);
       }
     } else {
       promise = getAllTokens(page, size);
     }
-
-    if (!promise) {
-      return;
-    }
-
-    this.setState({
-      isLoading: true
-    });
 
     promise
       .then(response => {
@@ -56,9 +46,7 @@ class TokenList extends Component {
         });
       })
       .catch(error => {
-        this.setState({
-          isLoading: false
-        });
+        console.log("Error while loading tokens", error);
       });
   }
   componentDidMount() {
@@ -115,4 +103,4 @@ class TokenList extends Component {
   }
 }
 
-export default withRouter(TokenList);
+export default withRouter(TokenTable);

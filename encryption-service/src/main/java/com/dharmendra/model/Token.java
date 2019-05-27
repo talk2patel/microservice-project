@@ -5,37 +5,43 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import lombok.NonNull;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Token {
 
-	@Id 
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	private @NonNull  @Column(unique=true)String originalToken;
-	private @NonNull String encryptedToken;
-	
+
+	@NotEmpty(message = "originalToken must be non be not empty")
+	private @Column(unique = true) String originalToken;
+	private String encryptedToken;
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getOriginalToken() {
 		return originalToken;
 	}
+
 	public void setOriginalToken(String originalToken) {
 		this.originalToken = originalToken;
 	}
+
 	public String getEncryptedToken() {
 		return encryptedToken;
 	}
+
 	public void setEncryptedToken(String encryptedToken) {
 		this.encryptedToken = encryptedToken;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -43,6 +49,7 @@ public class Token {
 		result = prime * result + ((originalToken == null) ? 0 : originalToken.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -59,9 +66,10 @@ public class Token {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Token [id=" + id + ", originalToken=" + originalToken + ", encryptedToken=" + encryptedToken + "]";
 	}
-	
+
 }

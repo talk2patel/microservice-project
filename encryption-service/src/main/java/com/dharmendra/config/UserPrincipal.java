@@ -1,5 +1,6 @@
 package com.dharmendra.config;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -23,14 +24,16 @@ public class UserPrincipal implements UserDetails {
     private String email;
     @JsonIgnore
     private String password;
+    private Instant joinedAt;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String name, String username, String email, String password, Instant joinedAt, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.joinedAt= joinedAt;
         this.authorities = authorities;
     }
 
@@ -45,6 +48,7 @@ public class UserPrincipal implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getCreatedAt(),
                 authorities
         );
     }
@@ -61,6 +65,9 @@ public class UserPrincipal implements UserDetails {
         return email;
     }
 
+    public Instant getJoinedAt() {
+    	return joinedAt;
+    }
     @Override
     public String getUsername() {
         return username;
@@ -96,6 +103,7 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
