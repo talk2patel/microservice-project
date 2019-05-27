@@ -13,6 +13,7 @@ class TokenList extends Component {
     super(props);
     this.state = {
       tokens: [],
+      refresh: false,
       page: 0,
       size: 10,
       totalElements: 0,
@@ -26,7 +27,7 @@ class TokenList extends Component {
   loadTokens(page = 0, size = TOKEN_LIST_SIZE) {
     let promise;
     if (this.props.username) {
-      if (this.props.type === "USER_CREATED_POLLS") {
+      if (this.props.type === "USER_CREATED_TOKENS") {
         promise = getUserCreatedTokens(this.props.username, page, size);
       }
     } else {
@@ -43,7 +44,7 @@ class TokenList extends Component {
 
     promise
       .then(response => {
-        const tokens = this.state.tokens.slice();
+        const tokens = [];
         this.setState({
           tokens: tokens.concat(response),
           page: response.page,
@@ -63,6 +64,17 @@ class TokenList extends Component {
   componentDidMount() {
     this.loadTokens();
   }
+
+  componentWillReceiveProps(props) {
+    const { refreshChild } = this.props;
+    if (props.refreshChild !== this.state.refresh) {
+      this.loadTokens();
+      this.setState({
+        refresh: !this.state.refresh
+      });
+    }
+  }
+
   columns = [
     {
       title: "Encrypted Token",
@@ -75,9 +87,10 @@ class TokenList extends Component {
   ];
 
   onRowClick = (record, rowIndex) => {
-    console.log("record, rowIndex:: ", record["encryptedToken"]);
+    // console.log("record, rowIndex:: ", record["encryptedToken"]);
     this.props.onClick(record["encryptedToken"], record["originalToken"]);
   };
+
   render() {
     return (
       <div>

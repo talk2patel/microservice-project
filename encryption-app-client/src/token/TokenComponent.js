@@ -14,6 +14,7 @@ class TokenComponent extends Component {
     super(props);
     this.state = {
       inputText: "",
+      refreshChild: false,
       original: "",
       encrypted: "",
       tokens: [],
@@ -25,7 +26,6 @@ class TokenComponent extends Component {
       isLoading: false
     };
     this.saveToken = this.saveToken.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.onCellSelection = this.onCellSelection.bind(this);
     this.onDecrypt = this.onDecrypt.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -35,14 +35,13 @@ class TokenComponent extends Component {
     if (this.state.inputText === this.state.original) {
       return;
     }
-    console.log("inputText:: ", this.state.inputText);
     let promise = createToken({ originalToken: this.state.inputText });
     promise
       .then(response => {
         const tokens = this.state.tokens.slice();
-
         this.setState({
-          tokens: tokens.concat(response.content)
+          tokens: tokens.concat(response),
+          refreshChild: !this.state.refreshChild
         });
       })
       .catch(error => {
@@ -51,8 +50,6 @@ class TokenComponent extends Component {
         });
       });
   }
-
-  handleChange(event) {}
 
   onCellSelection(encrypted, original) {
     console.log("onCellSelection:: ", encrypted, original);
@@ -103,6 +100,7 @@ class TokenComponent extends Component {
           Decrypt
         </Button>
         <TokenList
+          refreshChild={this.state.refreshChild}
           onClick={(encrypted, original) =>
             this.onCellSelection(encrypted, original)
           }
