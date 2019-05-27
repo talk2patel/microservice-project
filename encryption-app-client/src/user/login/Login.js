@@ -35,6 +35,7 @@ class LoginForm extends Component {
         login(loginRequest)
           .then(response => {
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+            localStorage.setItem("username", values["usernameOrEmail"]);
             this.props.onLogin();
           })
           .catch(error => {

@@ -12,5 +12,4 @@ public class EncryptionServiceApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }

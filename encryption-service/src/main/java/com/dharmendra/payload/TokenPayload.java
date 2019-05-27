@@ -5,10 +5,10 @@ import javax.validation.constraints.NotEmpty;
 public class TokenPayload {
 
 	private long id;
-	
 	@NotEmpty(message="originalToken must be non be not empty")
 	private String originalToken;
 	private String encryptedToken;
+	private String createdBy;
 	
 	public long getId() {
 		return id;
@@ -27,6 +27,12 @@ public class TokenPayload {
 	}
 	public void setEncryptedToken(String encryptedToken) {
 		this.encryptedToken = encryptedToken;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 	@Override
 	public String toString() {

@@ -100,6 +100,7 @@ class TokenComponent extends Component {
           onClick={(encrypted, original) =>
             this.onCellSelection(encrypted, original)
           }
+          type="USER_CREATED_TOKENS"
         />
       </div>
     );

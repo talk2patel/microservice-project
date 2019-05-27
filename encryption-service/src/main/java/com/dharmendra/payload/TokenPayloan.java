@@ -1,4 +1,4 @@
-package com.dharmendra.model;
+package com.dharmendra.payload;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Token {
+public class TokenPayloan {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,9 +19,7 @@ public class Token {
 	@NotEmpty(message = "originalToken must be non be not empty")
 	private @Column(unique = true) String originalToken;
 	private String encryptedToken;
-	@ManyToOne
-	@JoinColumn(name = "username")
-	private User createdBy;
+	private String createdBy;
 	
 	public long getId() {
 		return id;
@@ -47,11 +45,11 @@ public class Token {
 		this.encryptedToken = encryptedToken;
 	}
 
-	public User getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(User createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -71,7 +69,7 @@ public class Token {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Token other = (Token) obj;
+		TokenPayloan other = (TokenPayloan) obj;
 		if (originalToken == null) {
 			if (other.originalToken != null)
 				return false;

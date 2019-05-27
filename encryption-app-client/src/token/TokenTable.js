@@ -22,9 +22,15 @@ class TokenTable extends Component {
 
   loadTokens(page = 0, size = TOKEN_LIST_SIZE) {
     let promise;
-    if (this.props.username) {
+    console.log("this.props.username:: ", localStorage.getItem("username"));
+    console.log("this.props.type::", this.props.type);
+    if (localStorage.getItem("username")) {
       if (this.props.type === "USER_CREATED_TOKENS") {
-        promise = getUserCreatedTokens(this.props.username, page, size);
+        promise = getUserCreatedTokens(
+          localStorage.getItem("username"),
+          page,
+          size
+        );
       } else {
         promise = getAllTokens(page, size);
       }

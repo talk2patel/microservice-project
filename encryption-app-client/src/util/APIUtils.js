@@ -36,10 +36,14 @@ export function getAllTokens(page, size) {
 }
 
 export function createToken(tokenData) {
+  let token = {
+    originalToken: tokenData.originalToken,
+    createdBy: localStorage.getItem("username")
+  };
   return request({
     url: API_BASE_URL + "/tokens",
     method: "POST",
-    body: JSON.stringify(tokenData)
+    body: JSON.stringify(token)
   });
 }
 
@@ -96,15 +100,7 @@ export function getUserCreatedTokens(username, page, size) {
   size = size || TOKEN_LIST_SIZE;
 
   return request({
-    // url:
-    //   API_BASE_URL +
-    //   "/users/" +
-    //   username +
-    //   "/tokens?page=" +
-    //   page +
-    //   "&size=" +
-    //   size,
-    url: API_BASE_URL + "/users/" + username + "/tokens",
+    url: API_BASE_URL + "/tokens/createdBy/" + username,
     method: "GET"
   });
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dharmendra.exception.ResourceNotFoundException;
 import com.dharmendra.model.Token;
+import com.dharmendra.payload.TokenPayload;
 import com.dharmendra.repository.TokenRepository;
+import com.dharmendra.repository.UserRepository;
 import com.dharmendra.service.EncryptionService;
 
 @RestController
@@ -26,12 +28,21 @@ public class EncryptionController {
 	private TokenRepository tokenRepository;
 	@Autowired
 	private EncryptionService encryptionService;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping(value = "/tokens")
     @PreAuthorize("hasRole('USER')")
 	public List<Token> getAllTokens() {
 		return tokenRepository.findAll();
 	}
+	 
+	@GetMapping(value = "/tokens/createdBy/{username}")
+    @PreAuthorize("hasRole('USER')")
+	public List<Token> getAllTokensCreatedBy(@PathVariable String username) {
+		return tokenRepository.findAllByCreatedByUsername(username);
+	}
+	
 	
 	@GetMapping(value = "/tokens/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -41,7 +52,7 @@ public class EncryptionController {
 	
 	@PostMapping(value = "/tokens")
     @PreAuthorize("hasRole('USER')")
-	public Token saveToken(@Valid @RequestBody Token token) {
+	public Token saveToken(@Valid @RequestBody TokenPayload token) {
 		return encryptionService.saveToke(token);
 	}
 }
