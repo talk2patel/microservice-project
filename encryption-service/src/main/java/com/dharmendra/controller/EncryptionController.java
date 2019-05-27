@@ -1,20 +1,25 @@
 package com.dharmendra.controller;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dharmendra.controller.service.EncryptionService;
+import com.dharmendra.exception.ResourceNotFoundException;
 import com.dharmendra.model.Token;
+import com.dharmendra.payload.TokenPayload;
 import com.dharmendra.repository.TokenRepository;
+import com.dharmendra.service.EncryptionService;
 
 @RestController
 @RequestMapping(value="/api")
@@ -33,16 +38,14 @@ public class EncryptionController {
 	
 	@GetMapping(value = "/tokens/{id}")
     @PreAuthorize("hasRole('USER')")
-	public Token getToken(long id) {
-		return tokenRepository.findById(id).orElseGet(null);
+	public Token getToken(@PathVariable long id) {
+		return tokenRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Token", "id", Long.valueOf(id) ));
 	}
 	
 	@PostMapping(value = "/tokens")
     @PreAuthorize("hasRole('USER')")
-	public Token getToken(@RequestBody Token token) {
-		System.out.println("Received Token"+ token.toString());
+	public ResponseEntity<Token> saveToken(@Valid @RequestBody TokenPayload token) {
 		Token savedToken = encryptionService.saveToke(token);
-		System.out.println("Returned Token:: "+ token);
-		return savedToken;
+		return new ResponseEntity<Token>(savedToken, HttpStatus.CREATED);
 	}
 }

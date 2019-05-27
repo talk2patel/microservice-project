@@ -1,4 +1,4 @@
-package com.icerfire.exercise;
+package com.dharmendra;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

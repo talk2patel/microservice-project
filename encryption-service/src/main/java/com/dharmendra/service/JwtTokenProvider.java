@@ -1,4 +1,4 @@
-package com.dharmendra.controller.service;
+package com.dharmendra.service;
 import java.util.Date;
 
 import org.slf4j.Logger;

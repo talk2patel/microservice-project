@@ -13,18 +13,16 @@ import com.dharmendra.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserPrincipal implements UserDetails {
-    private Long id;
 
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
     private String name;
-
     private String username;
-
     @JsonIgnore
     private String email;
-
     @JsonIgnore
     private String password;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(Long id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -108,7 +106,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }

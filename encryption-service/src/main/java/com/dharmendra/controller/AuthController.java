@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.dharmendra.controller.service.JwtTokenProvider;
 import com.dharmendra.exception.AppException;
 import com.dharmendra.model.Role;
-import com.dharmendra.model.RoleName;
+import com.dharmendra.model.RoleType;
 import com.dharmendra.model.User;
 import com.dharmendra.payload.ApiResponse;
 import com.dharmendra.payload.JwtAuthenticationResponse;
@@ -29,6 +28,7 @@ import com.dharmendra.payload.LoginRequest;
 import com.dharmendra.payload.SignUpRequest;
 import com.dharmendra.repository.RoleRepository;
 import com.dharmendra.repository.UserRepository;
+import com.dharmendra.service.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,15 +36,12 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private JwtTokenProvider tokenProvider;
 
@@ -65,14 +62,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+            return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+            return new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
@@ -81,14 +78,10 @@ public class AuthController {
                 signUpRequest.getEmail(), signUpRequest.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+        Role userRole = roleRepository.findByName(RoleType.ROLE_USER)
                 .orElseThrow(() -> new AppException("User Role not set."));
-
         user.setRoles(Collections.singleton(userRole));
-
         User result = userRepository.save(user);
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/users/{username}")
                 .buildAndExpand(result.getUsername()).toUri();

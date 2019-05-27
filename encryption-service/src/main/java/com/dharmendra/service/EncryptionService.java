@@ -1,4 +1,4 @@
-package com.dharmendra.controller.service;
+package com.dharmendra.service;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.dharmendra.exception.EncryptionException;
 import com.dharmendra.model.Token;
+import com.dharmendra.payload.TokenPayload;
 import com.dharmendra.repository.TokenRepository;
 
 @Service
@@ -34,8 +35,10 @@ public class EncryptionService {
 		}
 	}
 
-	public Token saveToke(Token token) {
-		token.setEncryptedToken(encrypt(token.getOriginalToken()));
+	public Token saveToke(TokenPayload tokenPayload) {
+		Token token = new Token();
+		token.setOriginalToken(tokenPayload.getOriginalToken());
+		token.setEncryptedToken(encrypt(tokenPayload.getOriginalToken()));
 		tokenRepository.save(token);
 		return token;
 	}

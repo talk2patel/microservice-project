@@ -5,12 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
 
-import lombok.Data;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 @Entity
 public class Token {

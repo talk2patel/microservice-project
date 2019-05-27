@@ -1,6 +1,5 @@
 package com.dharmendra.model;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public abstract class DateAudit implements Serializable {
+public abstract class DateAudit {
 
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
